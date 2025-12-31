@@ -14,137 +14,156 @@
             --text-muted: #64748b;
         }
 
-        body { 
-            font-family: 'Tahoma', 'Arial', sans-serif; 
-            background-color: var(--bg); 
-            display: flex; 
-            justify-content: center; 
-            align-items: center;
-            min-height: 100vh;
-            margin: 0; 
-            padding: 15px;
-        }
-
-        .app-container { 
-            width: 100%; 
-            max-width: 450px; 
-        }
+        body { font-family: 'Segoe UI', Tahoma, sans-serif; background-color: var(--bg); display: flex; justify-content: center; padding: 20px 15px; margin: 0; }
+        .app-container { width: 100%; max-width: 550px; }
 
         .card {
-            background: var(--card-bg); 
-            border-radius: 20px; 
-            padding: 30px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1); 
-            border-top: 8px solid var(--elec-color);
+            background: var(--card-bg); border-radius: 20px; padding: 25px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05); margin-bottom: 30px;
+            border: 1px solid #e2e8f0; border-top: 8px solid;
         }
 
         h2 { 
-            color: var(--primary); 
-            text-align: center; 
-            margin-bottom: 25px;
-            font-size: 22px;
+            margin: 5px 0 20px 0; font-size: 1.2rem; color: var(--primary); 
+            display: flex; align-items: center; gap: 10px; padding-bottom: 12px; border-bottom: 2px solid #f1f5f9; 
         }
         
-        .input-group { margin-bottom: 20px; }
+        .input-section { background: #f8fafc; padding: 15px; border-radius: 12px; margin-bottom: 18px; border: 1px solid #edf2f7; }
+        .section-title { display: block; font-size: 0.8rem; font-weight: bold; color: var(--text-muted); margin-bottom: 12px; }
+
+        .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+
+        label { font-size: 0.7rem; color: #94a3b8; margin-bottom: 5px; display: block; text-align: left; direction: ltr; }
         
-        label { 
-            display: block; 
-            margin-bottom: 10px; 
-            font-weight: bold; 
-            color: var(--primary); 
-            font-size: 14px;
-        }
-        
-        input {
-            width: 100%;
-            padding: 14px;
-            border: 2px solid #e2e8f0;
-            border-radius: 12px;
-            box-sizing: border-box;
-            font-size: 16px;
-            outline: none;
-            transition: all 0.3s;
-            text-align: center;
+        input { 
+            width: 100%; padding: 12px 8px; border: 1.5px solid #e2e8f0; border-radius: 10px; 
+            text-align: center; font-size: 15px; background: white; box-sizing: border-box; 
         }
 
-        input:focus { 
-            border-color: var(--elec-color);
-            background-color: #fcfdfe;
-        }
+        button { width: 100%; padding: 16px; color: white; border: none; border-radius: 12px; font-size: 16px; font-weight: bold; cursor: pointer; margin-top: 5px; transition: 0.3s; }
+        .btn-elec { background: var(--elec-color); }
+        .btn-gas { background: var(--gas-color); }
+        button:active { transform: scale(0.98); }
 
-        button {
-            width: 100%;
-            padding: 16px;
-            background-color: var(--elec-color);
-            color: white;
-            border: none;
-            border-radius: 14px;
-            font-size: 18px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.3s;
-            margin-top: 10px;
-        }
-
-        button:active { transform: scale(0.96); }
-
-        .result {
-            margin-top: 25px;
-            padding: 20px;
-            background: #f0f7ff;
-            border-radius: 15px;
-            text-align: center;
-            border: 1px dashed var(--elec-color);
-            display: none;
-        }
-
-        .result-value {
-            display: block;
-            font-size: 24px;
-            color: var(--gas-color);
-            margin-top: 5px;
-        }
+        .result-box { margin-top: 20px; padding: 20px; border-radius: 15px; display: none; }
+        .res-line { display: flex; justify-content: space-between; margin-bottom: 10px; font-size: 0.95rem; }
+        .total-row { margin-top: 15px; padding-top: 15px; border-top: 2px dashed #cbd5e0; font-size: 1.2rem; font-weight: bold; }
     </style>
 </head>
 <body>
 
 <div class="app-container">
-    <div class="card">
-        <h2>محاسبه‌گر هزینه eprimo</h2>
-        
-        <div class="input-group">
-            <label>میزان مصرف (کیلووات ساعت):</label>
-            <input type="number" id="usage" placeholder="مثلاً 2500" inputmode="decimal">
+
+    <div class="card" style="border-top-color: var(--primary);">
+        <h2>⚙️ تنظیمات تعرفه (Tarif)</h2>
+        <div class="grid-2">
+            <div class="input-section">
+                <span class="section-title">برق (Strom)</span>
+                <div><label>Grundpreis (€/Monat)</label><input type="number" id="base_e" value="17.79"></div>
+                <div style="margin-top:10px"><label>Arbeitspreis (ct/kWh)</label><input type="number" id="unit_e" value="35.17"></div>
+            </div>
+            <div class="input-section">
+                <span class="section-title">گاز (Gas)</span>
+                <div><label>Grundpreis (€/Monat)</label><input type="number" id="base_g" value="20.95"></div>
+                <div style="margin-top:10px"><label>Arbeitspreis (ct/kWh)</label><input type="number" id="unit_g" value="12.27"></div>
+            </div>
         </div>
-
-        <div class="input-group">
-            <label>قیمت هر واحد (سنت یا یورو):</label>
-            <input type="number" id="price" placeholder="مثلاً 0.35" step="0.01" inputmode="decimal">
-        </div>
-
-        <button onclick="calculate()">محاسبه کل هزینه</button>
-
-        <div id="resultBox" class="result">
-            <span style="color: var(--text-muted); font-size: 14px;">مبلغ قابل پرداخت:</span>
-            <span id="totalDisplay" class="result-value">۰</span>
+        <div class="input-section" style="margin-bottom: 0;">
+            <span class="section-title">ضرایب تبدیل گاز</span>
+            <div class="grid-2">
+                <div><label>Brennwert</label><input type="number" id="brenn" value="11.537"></div>
+                <div><label>Z-Zahl</label><input type="number" id="zzahl" value="0.9419"></div>
+            </div>
         </div>
     </div>
+
+    <div class="card" style="border-top-color: var(--elec-color);">
+        <h2 style="color: var(--elec-color);">⚡ محاسبه قبض برق (Strom)</h2>
+        <div class="input-section">
+            <span class="section-title">اطلاعات شروع دوره</span>
+            <div class="grid-3">
+                <input type="number" id="ey1" placeholder="Year">
+                <input type="number" id="em1" placeholder="Month">
+                <input type="number" id="ed1" placeholder="Day">
+            </div>
+            <div style="margin-top: 15px;"><label>Zählerstand (kWh)</label><input type="number" id="er1"></div>
+        </div>
+        <div class="input-section">
+            <span class="section-title">اطلاعات پایان دوره</span>
+            <div class="grid-3">
+                <input type="number" id="ey2" placeholder="Year">
+                <input type="number" id="em2" placeholder="Month">
+                <input type="number" id="ed2" placeholder="Day">
+            </div>
+            <div style="margin-top: 15px;"><label>Zählerstand (kWh)</label><input type="number" id="er2"></div>
+        </div>
+        <button class="btn-elec" onclick="calculate('elec')">محاسبه فاکتور برق</button>
+        <div id="res_elec" class="result-box" style="background: #e3f2fd; border: 1px solid #bbdefb;"></div>
+    </div>
+
+    <div class="card" style="border-top-color: var(--gas-color);">
+        <h2 style="color: var(--gas-color);">🔥 محاسبه قبض گاز (Gas)</h2>
+        <div class="input-section">
+            <span class="section-title">اطلاعات شروع دوره</span>
+            <div class="grid-3">
+                <input type="number" id="gy1" placeholder="Year">
+                <input type="number" id="gm1" placeholder="Month">
+                <input type="number" id="gd1" placeholder="Day">
+            </div>
+            <div style="margin-top: 15px;"><label>Zählerstand (m³)</label><input type="number" id="gr1"></div>
+        </div>
+        <div class="input-section">
+            <span class="section-title">اطلاعات پایان دوره</span>
+            <div class="grid-3">
+                <input type="number" id="gy2" placeholder="Year">
+                <input type="number" id="gm2" placeholder="Month">
+                <input type="number" id="gd2" placeholder="Day">
+            </div>
+            <div style="margin-top: 15px;"><label>Zählerstand (m³)</label><input type="number" id="gr2"></div>
+        </div>
+        <button class="btn-gas" onclick="calculate('gas')">محاسبه فاکتور گاز</button>
+        <div id="res_gas" class="result-box" style="background: #f0fdf4; border: 1px solid #dcfce7;"></div>
+    </div>
+
 </div>
 
 <script>
-    function calculate() {
-        const usage = document.getElementById('usage').value;
-        const price = document.getElementById('price').value;
-        const resultBox = document.getElementById('resultBox');
-        const totalDisplay = document.getElementById('totalDisplay');
+    function calculate(type) {
+        const isGas = type === 'gas';
+        const prefix = isGas ? 'g' : 'e';
+        const gp = +document.getElementById('base_' + prefix).value;
+        const ap = +document.getElementById('unit_' + prefix).value / 100;
+        
+        const r1 = +document.getElementById(prefix + 'r1').value;
+        const r2 = +document.getElementById(prefix + 'r2').value;
+        const d1 = new Date(+document.getElementById(prefix + 'y1').value, +document.getElementById(prefix + 'm1').value - 1, +document.getElementById(prefix + 'd1').value);
+        const d2 = new Date(+document.getElementById(prefix + 'y2').value, +document.getElementById(prefix + 'm2').value - 1, +document.getElementById(prefix + 'd2').value);
 
-        if(usage && price) {
-            const total = (parseFloat(usage) * parseFloat(price)).toFixed(2);
-            resultBox.style.display = 'block';
-            totalDisplay.innerHTML = total.toLocaleString() + " واحد";
+        if (isNaN(d1) || isNaN(d2) || !r1 || !r2) return alert("لطفاً تمامی فیلدها را پر کنید.");
+
+        const diffDays = Math.ceil(Math.abs(d2 - d1) / (1000 * 60 * 60 * 24));
+        const months = diffDays / 30.42;
+        const diffReading = r2 - r1;
+        
+        let kwh, labelUnit;
+        if (isGas) {
+            kwh = diffReading * (+document.getElementById('brenn').value) * (+document.getElementById('zzahl').value);
+            labelUnit = "m³";
         } else {
-            alert('لطفاً عدد مصرف و قیمت را وارد کنید');
+            kwh = diffReading;
+            labelUnit = "kWh";
         }
+
+        const total = (kwh * ap) + (months * gp);
+        const resDiv = document.getElementById('res_' + (isGas ? 'gas' : 'elec'));
+        resDiv.style.display = 'block';
+        resDiv.innerHTML = `
+            <div class="res-line"><span>طول دوره:</span><span style="font-weight:bold">${diffDays} روز</span></div>
+            <div class="res-line"><span>انرژی مصرفی:</span><span style="font-weight:bold">${kwh.toFixed(0)} kWh</span></div>
+            <div class="res-line total-row" style="color:${isGas?'#166534':'#0d47a1'}"><span>مبلغ کل نهایی:</span><span>${total.toFixed(2)} €</span></div>
+        `;
+        resDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
     }
 </script>
 
