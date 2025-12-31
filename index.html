@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>محاسبه‌گر انرژی eprimo</title>
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --elec-color: #3498db; 
+            --gas-color: #27ae60; 
+            --bg: #f4f7f9;
+            --card-bg: #ffffff;
+            --text-muted: #64748b;
+        }
+
+        body { 
+            font-family: 'Tahoma', 'Arial', sans-serif; 
+            background-color: var(--bg); 
+            display: flex; 
+            justify-content: center; 
+            align-items: center;
+            min-height: 100vh;
+            margin: 0; 
+            padding: 15px;
+        }
+
+        .app-container { 
+            width: 100%; 
+            max-width: 450px; 
+        }
+
+        .card {
+            background: var(--card-bg); 
+            border-radius: 20px; 
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1); 
+            border-top: 8px solid var(--elec-color);
+        }
+
+        h2 { 
+            color: var(--primary); 
+            text-align: center; 
+            margin-bottom: 25px;
+            font-size: 22px;
+        }
+        
+        .input-group { margin-bottom: 20px; }
+        
+        label { 
+            display: block; 
+            margin-bottom: 10px; 
+            font-weight: bold; 
+            color: var(--primary); 
+            font-size: 14px;
+        }
+        
+        input {
+            width: 100%;
+            padding: 14px;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            box-sizing: border-box;
+            font-size: 16px;
+            outline: none;
+            transition: all 0.3s;
+            text-align: center;
+        }
+
+        input:focus { 
+            border-color: var(--elec-color);
+            background-color: #fcfdfe;
+        }
+
+        button {
+            width: 100%;
+            padding: 16px;
+            background-color: var(--elec-color);
+            color: white;
+            border: none;
+            border-radius: 14px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 10px;
+        }
+
+        button:active { transform: scale(0.96); }
+
+        .result {
+            margin-top: 25px;
+            padding: 20px;
+            background: #f0f7ff;
+            border-radius: 15px;
+            text-align: center;
+            border: 1px dashed var(--elec-color);
+            display: none;
+        }
+
+        .result-value {
+            display: block;
+            font-size: 24px;
+            color: var(--gas-color);
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="app-container">
+    <div class="card">
+        <h2>محاسبه‌گر هزینه eprimo</h2>
+        
+        <div class="input-group">
+            <label>میزان مصرف (کیلووات ساعت):</label>
+            <input type="number" id="usage" placeholder="مثلاً 2500" inputmode="decimal">
+        </div>
+
+        <div class="input-group">
+            <label>قیمت هر واحد (سنت یا یورو):</label>
+            <input type="number" id="price" placeholder="مثلاً 0.35" step="0.01" inputmode="decimal">
+        </div>
+
+        <button onclick="calculate()">محاسبه کل هزینه</button>
+
+        <div id="resultBox" class="result">
+            <span style="color: var(--text-muted); font-size: 14px;">مبلغ قابل پرداخت:</span>
+            <span id="totalDisplay" class="result-value">۰</span>
+        </div>
+    </div>
+</div>
+
+<script>
+    function calculate() {
+        const usage = document.getElementById('usage').value;
+        const price = document.getElementById('price').value;
+        const resultBox = document.getElementById('resultBox');
+        const totalDisplay = document.getElementById('totalDisplay');
+
+        if(usage && price) {
+            const total = (parseFloat(usage) * parseFloat(price)).toFixed(2);
+            resultBox.style.display = 'block';
+            totalDisplay.innerHTML = total.toLocaleString() + " واحد";
+        } else {
+            alert('لطفاً عدد مصرف و قیمت را وارد کنید');
+        }
+    }
+</script>
+
+</body>
+</html>
